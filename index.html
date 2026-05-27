@@ -1,0 +1,379 @@
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المهندس للأغذية | لمنتجات اللحوم والدواجن</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#6d2829', // اللون العنابي بتاعك
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .hero-bg {
+            background-color: #6d2829;
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+        }
+        .cart-slide-in { transform: translateX(0); transition: transform 0.3s ease-in-out; }
+        .cart-slide-out { transform: translateX(-100%); transition: transform 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- الرأس - Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                
+                <!-- مكان اللوجو بتاعك هنا -->
+                <div class="h-12 w-12 rounded-full overflow-hidden border-2 border-brand bg-gray-100 flex items-center justify-center shrink-0">
+                    <!-- حط رابط صورة اللوجو مكان الرابط اللي بين علامتين التنصيص في src -->
+                    <img id="shop-logo" src="https://placehold.co/100x100/6d2829/white?text=Logo" alt="لوجو المهندس" class="w-full h-full object-cover">
+                </div>
+
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-brand leading-tight">المهندس للأغذية</h1>
+                    <p class="text-[11px] text-gray-500 font-bold mt-0.5">لمنتجات اللحوم والدواجن</p>
+                </div>
+            </div>
+            
+            <button onclick="toggleCart()" class="relative p-2 rounded-full transition-colors hover:bg-gray-100 text-brand bg-brand/10" aria-label="سلة المشتريات">
+                <i class="fa-solid fa-cart-shopping text-xl"></i>
+                <span id="cart-badge" class="hidden absolute -top-2 -right-2 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-sm bg-brand border-2 border-white">
+                    0
+                </span>
+            </button>
+        </div>
+    </header>
+
+    <!-- القسم الترحيبي - Hero -->
+    <section class="text-white py-12 px-4 text-center relative overflow-hidden hero-bg">
+        <div class="max-w-3xl mx-auto relative z-10">
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-4">جودة .. أمانة .. طعم</h2>
+            <p class="text-xl md:text-2xl font-bold text-amber-200 mb-6">وفرنالك الخطوة الصعبة!</p>
+            <p class="text-gray-200 text-sm md:text-base">اطلب الآن أشهى وأفضل منتجات اللحوم الجاهزة وتصلك إلى باب المنزل بكل سهولة عبر واتساب.</p>
+        </div>
+    </section>
+
+    <!-- قائمة المنتجات - Products -->
+    <main class="max-w-5xl mx-auto px-4 py-12">
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="text-2xl font-bold text-gray-900 border-r-4 border-brand pr-3">قائمة المنتجات</h3>
+        </div>
+        
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- المنتجات هتظهر هنا -->
+        </div>
+    </main>
+
+    <!-- سلة المشتريات - Cart Overlay -->
+    <div id="cart-overlay" class="fixed inset-0 z-50 flex justify-start hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleCart()"></div>
+        
+        <div id="cart-panel" class="cart-slide-out relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col">
+            <div class="flex items-center justify-between p-5 border-b bg-gray-50">
+                <h2 class="text-xl font-bold flex items-center gap-2 text-brand">
+                    <i class="fa-solid fa-cart-shopping"></i> 
+                    سلة المشتريات
+                </h2>
+                <button onclick="toggleCart()" class="w-8 h-8 flex items-center justify-center bg-gray-200 hover:bg-red-100 hover:text-red-600 rounded-full text-gray-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div id="cart-content" class="flex-1 overflow-y-auto p-4 bg-gray-50/50">
+                <!-- محتوى السلة -->
+            </div>
+
+            <div id="cart-footer" class="hidden p-5 bg-white border-t shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)]">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-gray-500 font-bold">إجمالي الطلب:</span>
+                    <span id="cart-total" class="font-black text-2xl text-brand">0 ج.م</span>
+                </div>
+                <button onclick="handleCheckout()" class="w-full bg-[#25D366] hover:bg-[#128C7E] active:scale-95 text-white py-3.5 rounded-xl font-bold text-lg shadow-lg shadow-green-200 transition-all flex justify-center items-center gap-3">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    إرسال الطلب عبر واتساب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- برمجة المتجر (JavaScript) -->
+    <script>
+        const SHOP_PHONE_NUMBER = "201039139270"; 
+        const CURRENCY = "ج.م";
+
+        // ==========================================
+        // منطقة إضافة روابط الصور للمنتجات
+        // استبدل الروابط اللي جوه علامتين التنصيص "" بروابط صورك
+        // ==========================================
+        const PRODUCTS = [
+            { 
+                id: 1, 
+                name: "لحم مكعبات", 
+                description: "القطعيات المتاحة: سن / رقبة", 
+                price: 170, 
+                originalPrice: 180, 
+                unit: "500 جرام", 
+                image: "https://images.unsplash.com/photo-1603048297172-c92544798d5e?w=500&q=80" // حط رابط صورة اللحم المكعبات هنا
+            },
+            { 
+                id: 2, 
+                name: "كفتة شوي", 
+                description: "متبلة وجاهزة على الشوي مباشرة", 
+                price: 145, 
+                unit: "500 جرام", 
+                image: "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=500&q=80" // حط رابط صورة الكفتة هنا
+            },
+            { 
+                id: 3, 
+                name: "كفتة داوود باشا", 
+                description: "كرات اللحم المتبلة واللذيذة", 
+                price: 145, 
+                unit: "500 جرام", 
+                image: "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=500&q=80" 
+            },
+            { 
+                id: 4, 
+                name: "سجق شرقي", 
+                description: "سجق بلدي بتتبيلة المهندس المميزة", 
+                price: 145, 
+                unit: "500 جرام", 
+                image: "https://images.unsplash.com/photo-1528607929212-2316dec7fd63?w=500&q=80" 
+            },
+            { 
+                id: 5, 
+                name: "ممبار - فارغ", 
+                description: "ممبار نظيف وجاهز للحشو", 
+                price: 120, 
+                unit: "500 جرام", 
+                image: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80" 
+            },
+            { 
+                id: 6, 
+                name: "كفتة فرن", 
+                description: "كفتة مجهزة ومعدة للتسوية في الفرن", 
+                price: 145, 
+                unit: "500 جرام", 
+                image: "https://images.unsplash.com/photo-1544378730-8b5afcbceae0?w=500&q=80" 
+            },
+            { 
+                id: 7, 
+                name: "حشو حواوشي", 
+                description: "خلطة الحواوشي الجاهزة للتسوية", 
+                price: 145, 
+                unit: "500 جرام", 
+                image: "https://images.unsplash.com/photo-1613946069412-38f7f1ff0b65?w=500&q=80" 
+            },
+            { 
+                id: 8, 
+                name: "رغيف حواوشي", 
+                description: "رغيف حواوشي بلدي جاهز", 
+                price: 45, 
+                unit: "رغيف", 
+                image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500&q=80" 
+            },
+            { 
+                id: 9, 
+                name: "لحم مفروم (صافي)", 
+                description: "لحم بقري مفروم بدون نسبة دهون", 
+                price: 170, 
+                unit: "500 جرام", 
+                image: "https://images.unsplash.com/photo-1588168333986-5d122e232b70?w=500&q=80" 
+            },
+            { 
+                id: 10, 
+                name: "لحم مفروم (وسط)", 
+                description: "لحم بقري مفروم بنسبة دهون معتدلة", 
+                price: 160, 
+                unit: "500 جرام", 
+                image: "https://images.unsplash.com/photo-1588168333986-5d122e232b70?w=500&q=80" 
+            }
+        ];
+        // ==========================================
+
+        let cart = [];
+
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = PRODUCTS.map(product => `
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all flex flex-col">
+                    <div class="h-52 w-full relative bg-gray-100 group overflow-hidden">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        ${product.originalPrice ? `<span class="absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-md shadow-md z-10">تخفيض خاص</span>` : ''}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col relative">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-lg font-bold text-gray-900 leading-tight">${product.name}</h4>
+                            <div class="text-left whitespace-nowrap mr-2 bg-brand/5 px-2 py-1 rounded-md">
+                                <span class="font-black text-lg text-brand">${product.price} ج</span>
+                                ${product.originalPrice ? `<span class="block text-[11px] text-gray-400 line-through text-center">${product.originalPrice} ج</span>` : ''}
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-5 flex-1">${product.description}</p>
+                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-dashed border-gray-200">
+                            <span class="text-xs font-bold text-gray-600 bg-gray-100 px-2.5 py-1.5 rounded-md"><i class="fa-solid fa-weight-scale ml-1"></i> ${product.unit}</span>
+                            <button onclick="addToCart(${product.id})" class="text-white px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center gap-2 hover:opacity-90 shadow-md shadow-brand/30 bg-brand active:scale-95">
+                                <i class="fa-solid fa-cart-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+            
+            // تأثير بصري خفيف على زر السلة عند الإضافة
+            const badge = document.getElementById('cart-badge');
+            badge.classList.add('scale-150');
+            setTimeout(() => badge.classList.remove('scale-150'), 200);
+        }
+
+        function updateQuantity(productId, delta) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCartUI();
+                }
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('cart-badge');
+            
+            if (totalItems > 0) {
+                badge.innerText = totalItems;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            const cartContent = document.getElementById('cart-content');
+            const cartFooter = document.getElementById('cart-footer');
+            
+            if (cart.length === 0) {
+                cartContent.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-full text-gray-400 space-y-4 pt-10">
+                        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-2">
+                            <i class="fa-solid fa-basket-shopping text-4xl text-gray-300"></i>
+                        </div>
+                        <p class="text-lg font-bold text-gray-500">سلة المشتريات فارغة</p>
+                        <button onclick="toggleCart()" class="mt-4 px-6 py-2.5 text-white font-bold rounded-xl shadow-md bg-brand active:scale-95 transition-transform">بدء التسوق</button>
+                    </div>
+                `;
+                cartFooter.classList.add('hidden');
+            } else {
+                cartContent.innerHTML = '<div class="space-y-3">' + cart.map(item => `
+                    <div class="flex gap-3 items-center bg-white p-3 rounded-2xl border border-gray-100 shadow-sm relative">
+                        <div class="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-gray-100 border border-gray-200">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h4 class="font-bold text-gray-900 text-sm leading-tight">${item.name}</h4>
+                                <button onclick="removeFromCart(${item.id})" class="text-gray-300 hover:text-red-500 transition-colors bg-white rounded-full p-1 -mt-1 -mr-1">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                            <div class="text-xs text-brand font-bold mb-2">${item.price} ${CURRENCY}</div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center border border-gray-200 rounded-lg bg-gray-50 overflow-hidden" dir="ltr">
+                                    <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors"><i class="fa-solid fa-minus text-[10px]"></i></button>
+                                    <span class="w-8 text-center font-bold text-sm bg-white h-7 flex items-center justify-center border-x border-gray-200">${item.quantity}</span>
+                                    <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                                </div>
+                                <div class="font-black text-gray-900">${item.price * item.quantity} ج</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('') + '</div>';
+                
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                document.getElementById('cart-total').innerText = `${total} ${CURRENCY}`;
+                cartFooter.classList.remove('hidden');
+            }
+        }
+
+        function toggleCart() {
+            const overlay = document.getElementById('cart-overlay');
+            const panel = document.getElementById('cart-panel');
+            
+            if (overlay.classList.contains('hidden')) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => {
+                    panel.classList.remove('cart-slide-out');
+                    panel.classList.add('cart-slide-in');
+                }, 10);
+            } else {
+                panel.classList.remove('cart-slide-in');
+                panel.classList.add('cart-slide-out');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function handleCheckout() {
+            if (cart.length === 0) return;
+
+            let message = `*طلب جديد من متجر المهندس* 🛒\n\n`;
+            message += `*تفاصيل الطلب:*\n`;
+            
+            let total = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                message += `▪ ${item.quantity} × ${item.name} (${item.unit})\n   بـ ${itemTotal} ${CURRENCY}\n`;
+            });
+
+            message += `\n*الإجمالي المطلوب: ${total} ${CURRENCY}*\n\n`;
+            message += `مستني تأكيد الأوردر وميعاد التوصيل!`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${SHOP_PHONE_NUMBER}?text=${encodedMessage}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+
+        window.onload = () => {
+            renderProducts();
+            updateCartUI();
+        };
+    </script>
+</body>
+</html>
+
+
+```
