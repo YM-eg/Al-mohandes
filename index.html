@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -22,7 +23,7 @@
         body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         .hero-bg {
             background-color: #6d2829;
-            background-image: url('label');
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
         }
         .cart-slide-in { transform: translateX(0); transition: transform 0.3s ease-in-out; }
         .cart-slide-out { transform: translateX(-100%); transition: transform 0.3s ease-in-out; }
@@ -35,10 +36,9 @@
         <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 
-                <!-- مكان اللوجو بتاعك هنا -->
-                <div class="h-12 w-12 rounded-full overflow-hidden border-2 border-brand bg-gray-100 flex items-center justify-center shrink-0">
-                    <!-- حط رابط صورة اللوجو مكان الرابط اللي بين علامتين التنصيص في src -->
-                    <img id="shop-logo" src="logo" alt="لوجو المهندس" class="w-full h-full object-cover">
+                <!-- اللوجو -->
+                <div class="h-12 w-12 rounded-full overflow-hidden border-2 border-brand bg-white flex items-center justify-center shrink-0">
+                    <img id="shop-logo" src="./logo.png" alt="لوجو المهندس" class="w-full h-full object-contain">
                 </div>
 
                 <div>
@@ -114,8 +114,7 @@
         const CURRENCY = "ج.م";
 
         // ==========================================
-        // منطقة إضافة روابط الصور للمنتجات
-        // استبدل الروابط اللي جوه علامتين التنصيص "" بروابط صورك
+        // بيانات المنتجات مرتبطة بأسماء الصور اللي في GitHub
         // ==========================================
         const PRODUCTS = [
             { 
@@ -125,7 +124,7 @@
                 price: 170, 
                 originalPrice: 180, 
                 unit: "500 جرام", 
-                image: "Meatbox" // حط رابط صورة اللحم المكعبات هنا
+                image: "./Meatbox.png" 
             },
             { 
                 id: 2, 
@@ -133,7 +132,8 @@
                 description: "متبلة وجاهزة على الشوي مباشرة", 
                 price: 145, 
                 unit: "500 جرام", 
-                image: "Koftashoi" // حط رابط صورة الكفتة هنا
+                // استخدمنا label.png أو أي صورة مؤقتة لو مفيش صورة مخصوصة للكفتة الشوي
+                image: "./label.png" 
             },
             { 
                 id: 3, 
@@ -141,7 +141,7 @@
                 description: "كرات اللحم المتبلة واللذيذة", 
                 price: 145, 
                 unit: "500 جرام", 
-                image: "Daoud" 
+                image: "./Daoud.png" 
             },
             { 
                 id: 4, 
@@ -149,7 +149,7 @@
                 description: "سجق بلدي بتتبيلة المهندس المميزة", 
                 price: 145, 
                 unit: "500 جرام", 
-                image: "Sogok" 
+                image: "./Sogok.png" 
             },
             { 
                 id: 5, 
@@ -157,7 +157,7 @@
                 description: "ممبار نظيف وجاهز للحشو", 
                 price: 120, 
                 unit: "500 جرام", 
-                image: "./Mombar" 
+                image: "./Mombar.png" 
             },
             { 
                 id: 6, 
@@ -165,39 +165,23 @@
                 description: "كفتة مجهزة ومعدة للتسوية في الفرن", 
                 price: 145, 
                 unit: "500 جرام", 
-                image: "./Koftaforn" 
+                image: "./Koftaforn.png" 
             },
             { 
                 id: 7, 
-                name: "حشو حواوشي", 
-                description: "خلطة الحواوشي الجاهزة للتسوية", 
-                price: 145, 
-                unit: "500 جرام", 
-                image: "./Hawawshi" 
+                name: "حشو حواوشي / رغيف", 
+                description: "حشو جاهز 500 جرام أو رغيف بلدي", 
+                price: 45, 
+                unit: "رغيف / 500 جرام بـ 145", // جمعتهم في منتج واحد أو ممكن تفصلهم
+                image: "./Hawawshi.png" 
             },
             { 
                 id: 8, 
-                name: "رغيف حواوشي", 
-                description: "رغيف حواوشي بلدي جاهز", 
-                price: 45, 
-                unit: "رغيف", 
-                image: "./Hawawshi" 
-            },
-            { 
-                id: 9, 
-                name: "لحم مفروم (صافي)", 
-                description: "لحم بقري مفروم بدون نسبة دهون", 
-                price: 170, 
-                unit: "500 جرام", 
-                image: "./Mafroom" 
-            },
-            { 
-                id: 10, 
-                name: "لحم مفروم (وسط)", 
-                description: "لحم بقري مفروم بنسبة دهون معتدلة", 
+                name: "لحم مفروم", 
+                description: "صافي (170ج) أو وسط (160ج)", 
                 price: 160, 
                 unit: "500 جرام", 
-                image: "./Mafroom" 
+                image: "./Mafroom.jpg" 
             }
         ];
         // ==========================================
@@ -208,8 +192,8 @@
             const grid = document.getElementById('products-grid');
             grid.innerHTML = PRODUCTS.map(product => `
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all flex flex-col">
-                    <div class="h-52 w-full relative bg-gray-100 group overflow-hidden">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="h-52 w-full relative bg-gray-50 group overflow-hidden flex items-center justify-center p-2">
+                        <img src="${product.image}" alt="${product.name}" onerror="this.src='https://placehold.co/400x300/6d2829/white?text=No+Image'" class="w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-110">
                         ${product.originalPrice ? `<span class="absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-md shadow-md z-10">تخفيض خاص</span>` : ''}
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
@@ -244,7 +228,6 @@
             }
             updateCartUI();
             
-            // تأثير بصري خفيف على زر السلة عند الإضافة
             const badge = document.getElementById('cart-badge');
             badge.classList.add('scale-150');
             setTimeout(() => badge.classList.remove('scale-150'), 200);
@@ -295,8 +278,8 @@
             } else {
                 cartContent.innerHTML = '<div class="space-y-3">' + cart.map(item => `
                     <div class="flex gap-3 items-center bg-white p-3 rounded-2xl border border-gray-100 shadow-sm relative">
-                        <div class="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-gray-100 border border-gray-200">
-                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+                        <div class="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-gray-50 border border-gray-200">
+                            <img src="${item.image}" alt="${item.name}" onerror="this.src='https://placehold.co/100x100/6d2829/white?text=Img'" class="w-full h-full object-cover">
                         </div>
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
